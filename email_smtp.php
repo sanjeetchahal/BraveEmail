@@ -5,7 +5,6 @@
  *
  * @package       Brave Email Smtp
  * @author        Sanjeet Chahal
- * @version       1.0.0
  *
  * @wordpress-plugin
  * Plugin Name:   BraveEmailSmtp
