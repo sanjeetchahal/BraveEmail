@@ -5,11 +5,12 @@
  *
  * @package       Brave Email Smtp
  * @author        Sanjeet Chahal
+ * @version       2.0.0
  *
  * @wordpress-plugin
  * Plugin Name:   BraveEmailSmtp
  * Description:   Brave Email SMTP for Gmail
- * version:       1.0.0
+ * version:       2.0.0
  * Author:        Sanjeet chahal
  * Text Domain:   BraveEmailSmtp
  * Domain Path:   /languages
