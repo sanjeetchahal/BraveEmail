@@ -27,12 +27,13 @@
             <li class="mb-4">Navigate to <a href="https://console.developers.google.com/apis/" target="_blank">https://console.developers.google.com/apis/</a></li>
             <li class="mb-4">Log in with your Google credentials if you are not logged in.</li>
             <li class="mb-4">If you don't have a project yet, you'll need to create one. You can do this by clicking on the blue "<b>Create Project</b>" text on the right side! ( If you already have a project, then in the top bar, click on the name of your project instead, which will bring up a modal, and click <b>"New Project"</b>. )</li>
+            <li class="mb-4">Name your project and then click on the "<b>Create</b>" button again!</li>
             <!-- enable google drive api -->
             <li class="mb-4">Click on the "<b>Enable APIs and Services</b>" button.</li>
             <li class="mb-4">Search for "<b>Gmail API</b>" and click on it.</li>
             <li class="mb-4">Click on the "<b>Enable</b>" button.</li>
             
-            <li class="mb-4">Name your project and then click on the "<b>Create</b>" button again!</li>
+            
             <li class="mb-4">Once you have a project, you'll end up on the dashboard. ( If earlier you have already had a Project, then make sure you select the created project in the top bar! )</li>
             <li class="mb-4">Click the “<b>OAuth consent screen</b>” button on the left-hand side.</li>
             <li class="mb-4">Choose a <b>User Type</b> according to your needs and press "<b>Create</b>". 
