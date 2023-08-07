@@ -14,8 +14,8 @@
  * Author:        Sanjeet chahal
  * Text Domain:   BraveEmailSmtp
  * Domain Path:   /languages
- * 
- * 
+ *
+ *
  */
 defined( 'ABSPATH' ) || exit;
 if( ! class_exists( 'BraveEmailSmtp' ) ) {
@@ -46,7 +46,7 @@ if( ! class_exists( 'BraveEmailSmtp' ) ) {
 
          if( false === $remote || ! $this->cache_allowed ) {
 
-             
+
 
              $remote = wp_remote_get(
                  "https://raw.githubusercontent.com/sanjeetchahal/BraveEmail/main/info.json",
@@ -55,7 +55,7 @@ if( ! class_exists( 'BraveEmailSmtp' ) ) {
                      'headers' => array(
                          'Accept' => 'application/json',
 
-                         
+
                      )
                  )
              );
@@ -74,7 +74,7 @@ if( ! class_exists( 'BraveEmailSmtp' ) ) {
          $remote = json_decode( wp_remote_retrieve_body( $remote ) );
 
          return $remote;
-         
+
 
      }
 
@@ -146,7 +146,7 @@ if( ! class_exists( 'BraveEmailSmtp' ) ) {
          ) {
              $res = new stdClass();
              $res->slug = $this->plugin_slug;
-             $res->plugin = plugin_basename( __FILE__ ); 
+             $res->plugin = plugin_basename( __FILE__ );
              $res->new_version = $remote->version;
              $res->tested = $remote->tested;
              $res->package = $remote->download_url;
@@ -183,15 +183,21 @@ register_deactivation_hook( __FILE__,   'email_smtp_deactivation' );
 
 function email_smtp_activation()
 {
-       
+
 }
 
 function email_smtp_deactivation()
 {
-	    
+
 }
 
 include("brave_email_smtp.php");
+
+//  CPT include
+include("includes/cpt/mail.php");
+include("includes/cpt/mail_meta.php");
+include("includes/cpt/mail_register_rest_field.php");
+
 
 $v = new braveEmail();
 $v->setDocumentationMenu("Brave Email SMTP");
