@@ -17,7 +17,7 @@ if (isset($_GET['code'])) {
     $client->setAccessToken($token);
     file_put_contents(__DIR__ . DIRECTORY_SEPARATOR . 'uploads/token.json', json_encode($client->getAccessToken()));
     $configData['api_status'] = true;
-
+    $configData['active_provider'] = 'google';
     $configContent = "<?php\n\nreturn " . var_export($configData, true) . ";\n";
     file_put_contents($configFile, $configContent);
 }
@@ -55,7 +55,8 @@ if (isset($_GET['code'])) {
 $emailConfig = array();
 $emailConfig['subject'] = "";
 $emailConfig['message'] = "";
-$emailConfig['htmlPath'] = "path/example.html";
+$emailConfig['htmlPath'] = true;
+$emailConfig['to_email'] = $recipients;
 $send_ob = new braveEmail();
 $send_ob->to_email($emailConfig);
 

@@ -1,5 +1,5 @@
 <?php
-    register_rest_field( 'mails', 'subject',
+    register_rest_field( 'mails', 'notification',
 
         array(
             'get_callback'          => 'get_field_mails' ,

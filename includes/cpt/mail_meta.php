@@ -321,9 +321,8 @@ class mails
 	private function select_options( $field ) {
 		$output = '';
 		$options = [
-			"option_key_1" => "Option Label 1",
-			"option_key_2" => "Option Label 2",
-			"option_key_3" => "Option Label 3",
+			"new-registration" => "New Registration - For User",
+			"forgot-password" => "Forgot Password - For User"
 		];
 
 		foreach ( $options as $value => $label ) {

@@ -58,73 +58,16 @@ function mails() {
 
 	register_post_type( 'mails', $args );
 
-	$labels = array(
-	    'name'              => 'Types',
-	    'singular_name'     => 'Type',
-	    'search_items'      => 'Search Types',
-	    'all_items'         => 'All Types',
-	    'parent_item'       => 'Parent Type',
-	    'parent_item_colon' => 'Parent Type:',
-	    'edit_item'         => 'Edit Type',
-	    'update_item'       => 'Update Type',
-	    'add_new_item'      => 'Add New Type',
-	    'new_item_name'     => 'New Type Name',
-	    'menu_name'         => 'Types',
-	  );
-
-	$args = array(
-	    'hierarchical'      => true,
-	    'labels'            => $labels,
-	    'show_ui'           => true,
-	    'show_admin_column' => true,
-	    'query_var'         => true,
-	    'rewrite'           => array( 'slug' => 'type' ),
-	    'show_in_rest'          => true,
-	  );
-
-	  register_taxonomy('wf_mails_type',array('mails'),$args);
-
-	  // Add a taxonomy like tags
-	  $labels = array(
-	    'name'                       => 'Email Formatting',
-	    'singular_name'              => 'Color',
-	    'search_items'               => 'Color Name',
-	    'popular_items'              => 'Popular Color',
-	    'all_items'                  => 'All Color',
-	    'parent_item'                => null,
-	    'parent_item_colon'          => null,
-	    'edit_item'                  => 'Edit Color',
-	    'update_item'                => 'Update Color',
-	    'add_new_item'               => 'Add New Color',
-	    'new_item_name'              => 'New Color Name',
-	    'separate_items_with_commas' => 'Separate Email Formatting with commas',
-	    'add_or_remove_items'        => 'Add or remove Email Formatting',
-	    'choose_from_most_used'      => 'Choose from most used Email Formatting',
-	    'not_found'                  => 'No Email Formatting found',
-	    'menu_name'                  => 'Email Formatting',
-	  );
-
-	  $args = array(
-	    'hierarchical'          => false,
-	    'labels'                => $labels,
-	    'show_ui'               => true,
-	    'show_admin_column'     => true,
-	    'update_count_callback' => '_update_post_term_count',
-	    'query_var'             => true,
-	    'rewrite'               => array( 'slug' => 'color' ),
-	    'show_in_rest'          => true,
-	  );
-
-	  register_taxonomy('wf_mails_color','mails',$args);
+	
 
 }
 add_action( 'init', 'mails', 0 );
 
 
-function only_users_mails( $query )
-{
-	if ( $query->get( 'post_type' ) === 'mails' ) {
-		$query->set( 'author', get_current_user_id() );
-	}
-}
+// function only_users_mails( $query )
+// {
+// 	if ( $query->get( 'post_type' ) === 'mails' ) {
+// 		$query->set( 'author', get_current_user_id() );
+// 	}
+// }
 // add_action( 'pre_get_posts', 'only_users_mails' );
