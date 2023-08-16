@@ -21,8 +21,46 @@ class braveEmail
         add_filter( 'wp_mail_from', array(&$this, 'filter_from_email'), PHP_INT_MAX );
         // add_filter( 'wp_mail_from_name', array( $this, 'filter_mail_from_name' ), PHP_INT_MAX );
         add_filter('wp_new_user_notification_email', array(&$this, 'custom_new_user_notification_email'), 10, 3);
+        add_filter('wp_new_user_notification_email_admin', array(&$this, 'custom_new_user_notification_email_admin'), 10, 3);
     }
      public function custom_new_user_notification_email($email, $user, $blogname){
+
+
+        $template = array(
+			'post_type' => 'mails',
+			'numberposts'  => 1,
+			'post_status'   => 'publish',
+			'meta_query' => array(
+				array(
+					'key'   => 'notification',
+					'value' => 'new-registration-client',
+				)
+			)
+		);
+
+		$templatePosts = get_posts($template);
+        
+        if(count($templatePosts)){
+            $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
+        
+            $email['subject'] = '['.$blogname.'] '.$subject;
+    
+            $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
+    
+            $reset_key = get_password_reset_key($user);
+            $reset_url = network_site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user->user_login), 'login');
+    
+            $message = str_replace("[reset-link]",$reset_url,$message);
+            $message = str_replace("[company]",$blogname,$message);
+            $message = str_replace("[username]",$user->user_login,$message);
+        }
+       
+        
+        $email['message'] = $message;
+
+        return $email;
+    }
+    public function custom_new_user_notification_email_admin($email, $user, $blogname){
 
 
         $template = array(
@@ -46,12 +84,12 @@ class braveEmail
     
             $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
     
-            $reset_key = get_password_reset_key($user);
-            $reset_url = network_site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user->user_login), 'login');
+           
     
-            $message = str_replace("[reset-link]",$reset_url,$message);
+            $message = str_replace("[email]",$user->user_email,$message);
             $message = str_replace("[company]",$blogname,$message);
             $message = str_replace("[username]",$user->user_login,$message);
+            
         }
        
         

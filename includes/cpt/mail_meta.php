@@ -321,7 +321,8 @@ class mails
 	private function select_options( $field ) {
 		$output = '';
 		$options = [
-			"new-registration" => "New Registration - For User",
+			"new-registration-client" => "New Registration - For User",
+			"new-registration" => "New Registration - For Admin",
 			"forgot-password" => "Forgot Password - For User"
 		];
 
