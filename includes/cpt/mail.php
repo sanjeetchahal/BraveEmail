@@ -3,9 +3,9 @@
 function mails() {
 
 	$labels = array(
-		'name'                  => _x( 'mails', 'Post Type General Name', 'text_domain' ),
-		'singular_name'         => _x( 'mail', 'Post Type Singular Name', 'text_domain' ),
-		'menu_name'             => __( 'mails', 'text_domain' ),
+		'name'                  => _x( 'Mail Templates', 'Post Type General Name', 'text_domain' ),
+		'singular_name'         => _x( 'Mail Template', 'Post Type Singular Name', 'text_domain' ),
+		'menu_name'             => __( 'Mail Templates', 'text_domain' ),
 		'name_admin_bar'        => __( 'Post Type', 'text_domain' ),
 		'archives'              => __( 'Item Archives', 'text_domain' ),
 		'attributes'            => __( 'Item Attributes', 'text_domain' ),
@@ -33,19 +33,19 @@ function mails() {
 
 	);
 	$args = array(
-		'label'                 => __( 'mails', 'text_domain' ),
-		'description'           => __( 'Moodboard mails', 'text_domain' ),
+		'label'                 => __( 'Mail Template', 'text_domain' ),
+		'description'           => __( 'Mail Templates', 'text_domain' ),
 		'labels'                => $labels,
 		'supports'              => array( 'title', 'editor2','custom-fields' ),
-		'taxonomies'            => array( 'wf_mails_type', 'wf_mails_color' ),
+		'taxonomies'            => array(),
 		'hierarchical'          => false,
 		'public'                => true,
 		'show_ui'               => true,
-		'show_in_menu'          => true,
+		'show_in_menu'          => false,
 		'menu_position'         => 5,
 		'menu_icon'             => 'dashicons-email',
-		'show_in_admin_bar'     => true,
-		'show_in_nav_menus'     => true,
+		'show_in_admin_bar'     => false,
+		'show_in_nav_menus'     => false,
 		'can_export'            => true,
 		'has_archive'           => false,
 		'exclude_from_search'   => false,

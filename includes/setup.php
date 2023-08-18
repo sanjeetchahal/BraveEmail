@@ -43,7 +43,7 @@
                         
                     </div>
                     
-                    <a href="<?php echo admin_url('options-general.php?page=brave_email_smtp&provider=google&tabview='); ?>"
+                    <a href="<?php echo admin_url('admin.php?page=brave-email-smtp&provider=google&tabview='); ?>"
                         class="cursor-pointer text-white whitespace-nowrap bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Get Started </a>
                 </div>
@@ -67,7 +67,7 @@
                         </div>
                         
                     
-                    <a href="<?php echo admin_url('options-general.php?page=brave_email_smtp&provider=smtp&tabview=settings'); ?>" class="cursor-pointer text-white whitespace-nowrap bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <a href="<?php echo admin_url('admin.php?page=brave-email-smtp&provider=smtp&tabview=settings'); ?>" class="cursor-pointer text-white whitespace-nowrap bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Get Started </a>
                 </div>
             </div>

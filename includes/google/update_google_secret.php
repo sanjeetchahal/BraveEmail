@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['credentials'])) {
 
         //echo $currentURL; 
         //  exit; 
-        $redirect_url = admin_url('options-general.php?page=brave_email_smtp&provider=google&tabview=usage');
+        $redirect_url = admin_url('admin.php?page=brave-email-smtp&provider=google&tabview=usage');
         $client->setRedirectUri($redirect_url);
 
         if (!$client->isAccessTokenExpired()) {
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['credentials'])) {
     <div class="bg-white rounded shadow p-4">
         <h2 class="text-xl font-semibold mb-2">Upload JSON Credentials</h2>
         <p class="mb-4">Upload the JSON credentials file you downloaded from the Google App here:</p>
-        <form action="<?php echo $_SERVER['PHP_SELF'].'?page=brave_email_smtp&provider=google&tabview='.$_GET['tabview']; ?>" method="post" enctype="multipart/form-data">
+        <form action="<?php echo $_SERVER['PHP_SELF'].'?page=brave-email-smtp&provider=google&tabview='.$_GET['tabview']; ?>" method="post" enctype="multipart/form-data">
             <div class="mb-4">
                 <input type="file" name="credentials" accept=".json" required>
             </div>

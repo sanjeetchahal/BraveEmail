@@ -9,7 +9,7 @@ $client->addScope(Google_Service_Gmail::GMAIL_SEND);
 $client->setAuthConfig(__DIR__ .'/../'. DIRECTORY_SEPARATOR. $configData['client_secret']);
 $client->setAccessType('offline');
 $client->setPrompt('select_account consent');
-$redirect_url = admin_url('options-general.php?page=brave_email_smtp&provider=google&tabview=usage');
+$redirect_url = admin_url('admin.php?page=brave-email-smtp&provider=google&tabview=usage');
 $client->setRedirectUri($redirect_url);
 
 if (isset($_GET['code'])) {

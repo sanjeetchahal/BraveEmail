@@ -22,6 +22,53 @@ class braveEmail
         // add_filter( 'wp_mail_from_name', array( $this, 'filter_mail_from_name' ), PHP_INT_MAX );
         add_filter('wp_new_user_notification_email', array(&$this, 'custom_new_user_notification_email'), 10, 3);
         add_filter('wp_new_user_notification_email_admin', array(&$this, 'custom_new_user_notification_email_admin'), 10, 3);
+        add_filter('retrieve_password_message', array(&$this, 'customize_password_reset_email'), 10, 4);
+    }
+
+    function customize_password_reset_email($message, $key, $user_login, $user_data) {
+       
+    
+        // Customize the content of the email
+        // $message = "Hi " . $user_data->user_login . ",\n\n";
+        // $message .= "We received a request to reset the password for your account.\n\n";
+        // $message .= "To reset your password, please click on the following link:\n";
+        // $message .= network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_data->user_login), 'login') . "\n\n";
+        // $message .= "If you didn't request a password reset, you can ignore this email.\n\n";
+        // $message .= "Thank you,\nThe " . get_bloginfo('name') . " Team";
+
+        $blogname = get_bloginfo('name');
+        $template = array(
+			'post_type' => 'mails',
+			'numberposts'  => 1,
+			'post_status'   => 'publish',
+			'meta_query' => array(
+				array(
+					'key'   => 'notification',
+					'value' => 'forgot-password',
+				)
+			)
+		);
+
+		$templatePosts = get_posts($template);
+        
+        if(count($templatePosts)){
+            $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
+        
+            $email['subject'] = '['.$blogname.'] '.$subject;
+    
+            $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
+    
+            $reset_url = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_data->user_login), 'login');
+    
+            $message = str_replace("[reset-link]",$reset_url,$message);
+            $message = str_replace("[company]",$blogname,$message);
+            $message = str_replace("[username]",$user_data->user_login,$message);
+        }
+       
+        
+        
+    
+        return $message;
     }
      public function custom_new_user_notification_email($email, $user, $blogname){
 
@@ -53,6 +100,8 @@ class braveEmail
             $message = str_replace("[reset-link]",$reset_url,$message);
             $message = str_replace("[company]",$blogname,$message);
             $message = str_replace("[username]",$user->user_login,$message);
+            
+            
         }
        
         
@@ -131,16 +180,43 @@ class braveEmail
     public function email_submenu_page()
     {
         
-        add_submenu_page(
-            'options-general.php', // Parent slug jis bhi page ka submenu banan na us page par click kar ke last path copy kar lo edit.php?post_type=spaces
-            $this->docMenuName, // Page title
-            $this->docMenuName, // Menu title
-            'administrator', // Capability required
-            'brave_email_smtp', // Menu slug
-            array(&$this, 'brave_email_smtp_page_callback') // Callback function
-          );
+        // add_submenu_page(
+        //     'options-general.php', // Parent slug jis bhi page ka submenu banan na us page par click kar ke last path copy kar lo edit.php?post_type=spaces
+        //     $this->docMenuName, // Page title
+        //     $this->docMenuName, // Menu title
+        //     'administrator', // Capability required
+        //     'brave_email_smtp', // Menu slug
+        //     array(&$this, 'brave_email_smtp_page_callback') // Callback function
+        //   );
+
+          $menuAccessCapability = 'manage_options';
+            add_menu_page(
+                'Brave Email SMTP',     // Page title
+                'Brave Email SMTP',     // Menu title
+                $menuAccessCapability,  // Capability required to access
+                'brave-email-smtp',     // Menu slug (should be unique)
+                array(&$this, 'brave_email_smtp_page_callback'),
+                'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAyMCAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUuODgyMTEgMTEuMzI4NkM2LjAxMzM2IDExLjI1ODggNi4xNjAxMiAxMS4yMjIyIDYuMzA5MjIgMTEuMjIyMkwxMy42OTA4IDExLjIyMjJDMTMuODM5OSAxMS4yMjIyIDEzLjk4NjYgMTEuMjU4OCAxNC4xMTc5IDExLjMyODZDMTQuOTQxMiAxMS43NjY2IDE0LjYyNiAxMyAxMy42OTA4IDEzTDYuMzA5MjEgMTNDNS4zNzQwMSAxMyA1LjA1ODgzIDExLjc2NjYgNS44ODIxMSAxMS4zMjg2WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTMuMTMzNTQgOC4yMTc0OUMzLjI2MjYzIDguMTQ3NjcgMy40MDY5OCA4LjExMTExIDMuNTUzNjIgOC4xMTExMUwxNi40NDY0IDguMTExMTFDMTYuNTkzIDguMTExMTEgMTYuNzM3NCA4LjE0NzY3IDE2Ljg2NjUgOC4yMTc0OUMxNy42NzYyIDguNjU1NSAxNy4zNjYyIDkuODg4ODkgMTYuNDQ2NCA5Ljg4ODg5TDMuNTUzNjIgOS44ODg4OUMyLjYzMzc5IDkuODg4ODkgMi4zMjM4IDguNjU1NSAzLjEzMzU0IDguMjE3NDlaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMi4yNjMzNCAwLjUzNjY5M0MyLjEyMTQyIDAuNjY4NzY5IDEuOTk5MDIgMC44MjQwMzMgMS45MDIzNSAwLjk5ODgyM0wwLjIzNTM4MiA0LjAxMjg3Qy0wLjQ1MTQ3OCA1LjI1NDc4IDAuNDQ3MTA2IDYuNzc3NzggMS44NjY3MSA2Ljc3Nzc4TDE4LjEzMzMgNi43Nzc3OEMxOS41NTI5IDYuNzc3NzggMjAuNDUxNSA1LjI1NDc4IDE5Ljc2NDYgNC4wMTI4N0wxOC4wOTc2IDAuOTk4ODIyQzE3Ljk5MjMgMC44MDgzNTQgMTcuODU2NCAwLjY0MTA3MiAxNy42OTggMC41MDE3MTRDMTYuMDk1OSAxLjUwNTg5IDEyLjA5MTQgMy44NzM3NyA5Ljk1MjcyIDMuODczNzdDNy44Mzg0OSAzLjg3Mzc3IDMuOTAwODcgMS41NTk3MyAyLjI2MzM0IDAuNTM2NjkzWiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTIuOTYwNjMgMC4xMjcyMzNDNC43MjU2NiAxLjE5ODU5IDguMDk5MzEgMy4wODY3NyA5Ljk1MjcyIDMuMDg2NzdDMTEuODE3MiAzLjA4Njc3IDE1LjIyMDIgMS4xNzU5MiAxNi45NzYzIDAuMTA4MDlDMTYuODEyNyAwLjA2MTU0MjMgMTYuNjQxMyAwLjAzNzAzOSAxNi40NjYzIDAuMDM3MDM5TDMuNTMzNjggMC4wMzcwMzc4QzMuMzM2MTIgMC4wMzcwMzc5IDMuMTQzMSAwLjA2ODI4MjcgMi45NjA2MyAwLjEyNzIzM1oiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=',
+				40,
+                
+            );
+            
+            // Add a submenu item under the custom top-level menu
+            add_submenu_page(
+                'brave-email-smtp',      // Parent menu slug
+                'Mail Template',          // Page title
+                'Mail Template',          // Menu title
+                $menuAccessCapability,   // Capability required to access
+                'mails',   // Menu slug (should be unique)
+                array(&$this, 'brave_email_mail_template_callback') // Callback function to display the page content
+            );
     }
 
+    public function brave_email_mail_template_callback() {
+        echo '<script>
+            window.location.href = "' . admin_url('edit.php?post_type=mails') . '";
+        </script>';
+    }
     public function brave_email_smtp_page_callback() {
         // echo "fads";exit;
         if (isset($_GET['page']) && !isset($_GET['provider'])) {

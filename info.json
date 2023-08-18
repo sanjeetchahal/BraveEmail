@@ -1,9 +1,9 @@
-{	"name" : "email_smtp",
+{	"name" : "Brave Email SMTP",
     "slug" : "email_smtp",
 	"version" : "2.0",
 	"download_url" : "https://github.com/sanjeetchahal/BraveEmail/archive/main.zip",
 	"requires" : "2.0",
-	"tested" : "5.8",
+	"tested" : "6.3",
 	"requires_php" : "5.3",
 	"last_updated" : "2021-01-30 02:10:00",
 	"sections" : {

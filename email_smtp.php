@@ -106,8 +106,14 @@ if( ! class_exists( 'BraveEmailSmtp' ) ) {
          $res->version = $remote->version;
          $res->tested = $remote->tested;
          $res->requires = $remote->requires;
-         $res->author = $remote->author;
-         $res->author_profile = $remote->author_profile;
+         if(isset($remote->author)){
+            $res->author = $remote->author;
+         }
+         if(isset($remote->author)){
+            $res->author_profile = $remote->author_profile;
+         }
+         
+         
          $res->download_link = $remote->download_url;
          $res->trunk = $remote->download_url;
          $res->requires_php = $remote->requires_php;
@@ -183,13 +189,40 @@ register_deactivation_hook( __FILE__,   'email_smtp_deactivation' );
 
 function email_smtp_activation()
 {
-
+    
 }
 
 function email_smtp_deactivation()
 {
 
 }
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'my_custom_plugin_document_links');
+function my_custom_plugin_document_links($links) {
+    // Check if the plugin is active
+    // echo "ddds";
+    // exit;
+        if (is_plugin_active(plugin_basename(__FILE__))) {
+            $settingsLink = '<a href="' . esc_url(admin_url('admin.php?page=brave-email-smtp')) . '">Settings</a>';
+            $mailTemplate = '<a href="' . esc_url(admin_url('edit.php?post_type=mails')) . '">Mail Templates</a>';
+            array_push($links, $settingsLink);
+            array_push($links, $mailTemplate);
+        }
+    return $links;
+}
+
+// add_action( 'admin_menu', 'add_admin_options_page');
+
+// function add_admin_options_page() {
+    
+	
+
+			
+		
+
+		
+
+		
+// 	}
 
 include("brave_email_smtp.php");
 
@@ -199,6 +232,6 @@ include("includes/cpt/mail_meta.php");
 include("includes/cpt/mail_register_rest_field.php");
 
 
-$v = new braveEmail();
-$v->setDocumentationMenu("Brave Email SMTP");
-$v->doSetup();
+$braveEmailObj = new braveEmail();
+$braveEmailObj->setDocumentationMenu("Brave Email SMTP");
+$braveEmailObj->doSetup();

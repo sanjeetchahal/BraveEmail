@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['to_email'])) {
     <h1 class="text-3xl font-semibold mb-4">Sent Email</h1>
 
     <div class="bg-white rounded shadow p-4">
-        <form action="<?php echo $_SERVER['PHP_SELF'].'?page=brave_email_smtp&provider=smtp&tabview='.$_GET['tabview']; ?>" method="post" enctype="multipart/form-data">
+        <form action="<?php echo $_SERVER['PHP_SELF'].'?page=brave-email-smtp&provider=smtp&tabview='.$_GET['tabview']; ?>" method="post" enctype="multipart/form-data">
             <div class="md:flex md:items-center mb-6">
                 <div class="md:w-1/3">
                 <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">

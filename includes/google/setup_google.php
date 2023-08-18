@@ -45,11 +45,7 @@
             </li>
             <li class="mb-4">Enter a name for your App in the "<b>App name</b>" field, which will appear as the name of the app asking for consent.</li>
             <li class="mb-4">For the "<b>User support email</b>" field, select an email address that users can use to contact you with questions about their consent.</li>
-            <li class="mb-4">Under the "<b>Authorized domains</b>" section, press the "<b>Add Domain</b>" button and enter your domain name, probably: <b>
-                 <?php
-                  $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-                 echo $protocol.'://' . $_SERVER['HTTP_HOST']  ?>
-            </b> without subdomains!</li>
+          
             <li class="mb-4">At the "<b>Developer contact information</b>" section, enter an email address that Google can use to notify you about any changes to your project.</li>
             <li class="mb-4">Press "<b>Save and Continue</b>", then press it again on the "Scopes" and "Test users" pages, too!</li>
             <li class="mb-4">On the left side, click on the "<b>Credentials</b>" menu point, then click the "<b>+ Create Credentials</b>" button in the top bar.</li>
@@ -94,7 +90,7 @@
             <li class="mb-4">Currently, your App is in Testing mode, so only a limited number of people can use it. To allow this App for any user with a Google Account, click on the "<b>OAuth consent screen</b>" option on the left side, then click the "<b>PUBLISH APP</b>" button under the "<b>Publishing status</b>" section, and press the "<b>Confirm</b>" button. </li>
         </ol>
 
-            <a href="upload_secret.php" class="block bg-blue-500 hover:bg-blue-600 text-white text-center py-5 rounded not-prose">
+            <a href="<?php echo admin_url('admin.php?page=brave-email-smtp&provider=google&tabview=gjson'); ?>" class="block bg-blue-500 hover:bg-blue-600 text-white text-center py-5 rounded not-prose">
                 <h2 class="text-xl font-bold not-prose "> I am done setting up my Google App</h2>
             </a>
 
