@@ -37,32 +37,51 @@ class braveEmail
         // $message .= "Thank you,\nThe " . get_bloginfo('name') . " Team";
 
         $blogname = get_bloginfo('name');
-        $template = array(
-			'post_type' => 'mails',
-			'numberposts'  => 1,
-			'post_status'   => 'publish',
-			'meta_query' => array(
-				array(
-					'key'   => 'notification',
-					'value' => 'forgot-password',
-				)
-			)
-		);
+        
 
-		$templatePosts = get_posts($template);
+        // $template = array(
+		// 	'post_type' => 'mails',
+		// 	'numberposts'  => 1,
+		// 	'post_status'   => 'publish',
+		// 	'meta_query' => array(
+		// 		array(
+		// 			'key'   => 'notification',
+		// 			'value' => 'forgot-password',
+		// 		)
+		// 	)
+		// );
+        // $templatePosts = get_posts($template);
+        // if(count($templatePosts)){
+        //     $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
         
-        if(count($templatePosts)){
-            $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
+        //     $email['subject'] = '['.$blogname.'] '.$subject;
+    
+        //     $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
+    
+        //     $reset_url = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_data->user_login), 'login');
+    
+        //     $message = str_replace("[reset-link]",$reset_url,$message);
+        //     $message = str_replace("[company]",$blogname,$message);
+        //     $message = str_replace("[username]",$user_data->user_login,$message);
+        // }
         
+        $forgot_password_template_notification = get_option('forgot_password_template_notification');
+        if(!empty($forgot_password_template_notification) && $forgot_password_template_notification == "enabled"){
+            $message = get_option('forgot_password_template');
+            $subject = get_option('forgot_password_template_subject');
+            
+            // $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
+            // $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
+
             $email['subject'] = '['.$blogname.'] '.$subject;
     
-            $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
+            
     
             $reset_url = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_data->user_login), 'login');
     
-            $message = str_replace("[reset-link]",$reset_url,$message);
-            $message = str_replace("[company]",$blogname,$message);
-            $message = str_replace("[username]",$user_data->user_login,$message);
+            $message = str_replace("{reset_link}",$reset_url,$message);
+            $message = str_replace("{company}",$blogname,$message);
+            $message = str_replace("{username}",$user_data->user_login,$message);
         }
        
         
@@ -73,82 +92,112 @@ class braveEmail
      public function custom_new_user_notification_email($email, $user, $blogname){
 
 
-        $template = array(
-			'post_type' => 'mails',
-			'numberposts'  => 1,
-			'post_status'   => 'publish',
-			'meta_query' => array(
-				array(
-					'key'   => 'notification',
-					'value' => 'new-registration-client',
-				)
-			)
-		);
+        // $template = array(
+		// 	'post_type' => 'mails',
+		// 	'numberposts'  => 1,
+		// 	'post_status'   => 'publish',
+		// 	'meta_query' => array(
+		// 		array(
+		// 			'key'   => 'notification',
+		// 			'value' => 'new-registration-client',
+		// 		)
+		// 	)
+		// );
 
-		$templatePosts = get_posts($template);
+		// $templatePosts = get_posts($template);
         
-        if(count($templatePosts)){
-            $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
+        // if(count($templatePosts)){
+        //     $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
         
-            $email['subject'] = '['.$blogname.'] '.$subject;
+        //     $email['subject'] = '['.$blogname.'] '.$subject;
     
-            $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
+        //     $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
     
+        //     $reset_key = get_password_reset_key($user);
+        //     $reset_url = network_site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user->user_login), 'login');
+    
+        //     $message = str_replace("[reset-link]",$reset_url,$message);
+        //     $message = str_replace("[company]",$blogname,$message);
+        //     $message = str_replace("[username]",$user->user_login,$message);
+            
+            
+        // }
+
+        $new_registration_client_template_notification = get_option('new_registration_client_template_notification');
+        if(!empty($new_registration_client_template_notification) && $new_registration_client_template_notification == "enabled"){
+            $message = get_option('new_registration_client_template');
+            $subject = get_option('new_registration_client_template_subject');
+
+            
             $reset_key = get_password_reset_key($user);
             $reset_url = network_site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user->user_login), 'login');
-    
-            $message = str_replace("[reset-link]",$reset_url,$message);
-            $message = str_replace("[company]",$blogname,$message);
-            $message = str_replace("[username]",$user->user_login,$message);
             
-            
+            $email['subject'] = '['.$blogname.'] '.$subject;
+
+            $message = str_replace("{reset_link}",$reset_url,$message);
+            $message = str_replace("{company}",$blogname,$message);
+            $message = str_replace("{username}",$user->user_login,$message);
+            $email['message'] = $message;
         }
        
         
-        $email['message'] = $message;
+        
 
         return $email;
     }
     public function custom_new_user_notification_email_admin($email, $user, $blogname){
 
 
-        $template = array(
-			'post_type' => 'mails',
-			'numberposts'  => 1,
-			'post_status'   => 'publish',
-			'meta_query' => array(
-				array(
-					'key'   => 'notification',
-					'value' => 'new-registration',
-				)
-			)
-		);
+        // $template = array(
+		// 	'post_type' => 'mails',
+		// 	'numberposts'  => 1,
+		// 	'post_status'   => 'publish',
+		// 	'meta_query' => array(
+		// 		array(
+		// 			'key'   => 'notification',
+		// 			'value' => 'new-registration',
+		// 		)
+		// 	)
+		// );
 
-		$templatePosts = get_posts($template);
+		// $templatePosts = get_posts($template);
         
-        if(count($templatePosts)){
-            $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
+        // if(count($templatePosts)){
+        //     $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
         
-            $email['subject'] = '['.$blogname.'] '.$subject;
+        //     $email['subject'] = '['.$blogname.'] '.$subject;
     
-            $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
+        //     $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
     
            
     
-            $message = str_replace("[email]",$user->user_email,$message);
-            $message = str_replace("[company]",$blogname,$message);
-            $message = str_replace("[username]",$user->user_login,$message);
+        //     $message = str_replace("[email]",$user->user_email,$message);
+        //     $message = str_replace("[company]",$blogname,$message);
+        //     $message = str_replace("[username]",$user->user_login,$message);
             
-        }
+        // }
        
+        $new_registration_admin_template_notification = get_option('new_registration_admin_template_notification');
+        if(!empty($new_registration_admin_template_notification) && $new_registration_admin_template_notification == "enabled"){
+            $message = get_option('new_registration_admin_template');
+            $subject = get_option('new_registration_admin_template_subject');
+
+            
+            $email['subject'] = '['.$blogname.'] '.$subject;
+            
+            $message = str_replace("{email}",$user->user_email,$message);
+            $message = str_replace("{company}",$blogname,$message);
+            $message = str_replace("{username}",$user->user_login,$message);
+            $email['message'] = $message;
+        }
+
         
-        $email['message'] = $message;
 
         return $email;
     }
 
     public function custom_phpmailer_init( $phpmailer ) { 
-            
+            echo "<pre>";print_r($phpmailer);exit;
             $message = $phpmailer->Body;
             $recipients = $phpmailer->getToAddresses();
             
@@ -207,16 +256,29 @@ class braveEmail
                 'Mail Template',          // Page title
                 'Mail Template',          // Menu title
                 $menuAccessCapability,   // Capability required to access
-                'mails',   // Menu slug (should be unique)
+                'mail-templates',   // Menu slug (should be unique)
                 array(&$this, 'brave_email_mail_template_callback') // Callback function to display the page content
             );
+
+            // add_submenu_page(
+            //     'brave-email-smtp',      // Parent menu slug
+            //     'Mail Template',          // Page title
+            //     'Mail Template',          // Menu title
+            //     $menuAccessCapability,   // Capability required to access
+            //     'mails',   // Menu slug (should be unique)
+            //     array(&$this, 'brave_email_mail_template_callback') // Callback function to display the page content
+            // );
     }
 
     public function brave_email_mail_template_callback() {
-        echo '<script>
-            window.location.href = "' . admin_url('edit.php?post_type=mails') . '";
-        </script>';
+        include('includes/mail_template.php');
     }
+
+    // public function brave_email_mail_template_callback() {
+    //     echo '<script>
+    //         window.location.href = "' . admin_url('edit.php?post_type=mails') . '";
+    //     </script>';
+    // }
     public function brave_email_smtp_page_callback() {
         // echo "fads";exit;
         if (isset($_GET['page']) && !isset($_GET['provider'])) {

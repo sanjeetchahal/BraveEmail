@@ -189,12 +189,38 @@ register_deactivation_hook( __FILE__,   'email_smtp_deactivation' );
 
 function email_smtp_activation()
 {
+    add_option('new_registration_client_template', '');
+    add_option('new_registration_client_template_subject', 'Login Details');
+    add_option('new_registration_client_template_formatting', 'plain');
+    add_option('new_registration_client_template_notification', 'disabled');
     
+    add_option('new_registration_admin_template', '');
+    add_option('new_registration_admin_template_subject', 'New User Registration');
+    add_option('new_registration_admin_template_formatting', 'plain');
+    add_option('new_registration_admin_template_notification', 'disabled');
+
+    add_option('forgot_password_template', '');
+    add_option('forgot_password_template_subject', 'Password Reset');
+    add_option('forgot_password_template_formatting', 'plain');
+    add_option('forgot_password_template_notification', 'disabled');
 }
 
 function email_smtp_deactivation()
 {
+    delete_option('new_registration_client_template');
+    delete_option('new_registration_client_template_subject');
+    delete_option('new_registration_client_template_formatting');
+    delete_option('new_registration_client_template_notification');
+    
+    delete_option('new_registration_admin_template');
+    delete_option('new_registration_admin_template_subject');
+    delete_option('new_registration_admin_template_formatting');
+    delete_option('new_registration_admin_template_notification');
 
+    delete_option('forgot_password_template');
+    delete_option('forgot_password_template_subject');
+    delete_option('forgot_password_template_formatting');
+    delete_option('forgot_password_template_notification');
 }
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'my_custom_plugin_document_links');
 function my_custom_plugin_document_links($links) {
@@ -203,7 +229,8 @@ function my_custom_plugin_document_links($links) {
     // exit;
         if (is_plugin_active(plugin_basename(__FILE__))) {
             $settingsLink = '<a href="' . esc_url(admin_url('admin.php?page=brave-email-smtp')) . '">Settings</a>';
-            $mailTemplate = '<a href="' . esc_url(admin_url('edit.php?post_type=mails')) . '">Mail Templates</a>';
+            $mailTemplate = '<a href="' . esc_url(admin_url('admin.php?page=mail-templates')) . '">Mail Templates</a>';
+            // $mailTemplate = '<a href="' . esc_url(admin_url('edit.php?post_type=mails')) . '">Mail Templates</a>';
             array_push($links, $settingsLink);
             array_push($links, $mailTemplate);
         }
@@ -227,9 +254,9 @@ function my_custom_plugin_document_links($links) {
 include("brave_email_smtp.php");
 
 //  CPT include
-include("includes/cpt/mail.php");
-include("includes/cpt/mail_meta.php");
-include("includes/cpt/mail_register_rest_field.php");
+// include("includes/cpt/mail.php");
+// include("includes/cpt/mail_meta.php");
+// include("includes/cpt/mail_register_rest_field.php");
 
 
 $braveEmailObj = new braveEmail();
