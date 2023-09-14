@@ -197,7 +197,7 @@ class braveEmail
     }
 
     public function custom_phpmailer_init( $phpmailer ) { 
-            echo "<pre>";print_r($phpmailer);exit;
+            // echo "<pre>";print_r($phpmailer);exit;
             $message = $phpmailer->Body;
             $recipients = $phpmailer->getToAddresses();
             
