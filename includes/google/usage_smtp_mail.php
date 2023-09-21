@@ -11,15 +11,24 @@ $client->setAccessType('offline');
 $client->setPrompt('select_account consent');
 $redirect_url = admin_url('admin.php?page=brave-email-smtp&provider=google&tabview=usage');
 $client->setRedirectUri($redirect_url);
-
+$tokenStatus = true;
+$errorMessage = "";
 if (isset($_GET['code'])) {
     $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-    $client->setAccessToken($token);
-    file_put_contents(__DIR__ . DIRECTORY_SEPARATOR . 'uploads/token.json', json_encode($client->getAccessToken()));
-    $configData['api_status'] = true;
-    $configData['active_provider'] = 'google';
-    $configContent = "<?php\n\nreturn " . var_export($configData, true) . ";\n";
-    file_put_contents($configFile, $configContent);
+    if(isset($token['error'])){
+        $tokenStatus = false;
+        $errorMessage = $token['error'];
+    }else
+    {
+
+    
+        $client->setAccessToken($token);
+        file_put_contents(__DIR__ . DIRECTORY_SEPARATOR . 'uploads/token.json', json_encode($client->getAccessToken()));
+        $configData['api_status'] = true;
+        $configData['active_provider'] = 'google';
+        $configContent = "<?php\n\nreturn " . var_export($configData, true) . ";\n";
+        file_put_contents($configFile, $configContent);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -48,22 +57,31 @@ if (isset($_GET['code'])) {
     <h1 class="text-3xl font-semibold mb-4">Sample Code</h1>
 
     <div class="bg-white rounded shadow p-4">
+        <?php if($tokenStatus){ ?>
         <div class="mb-3 bg-yellow-100 p-5">
             <pre>
 &lt;?php
 
 $emailConfig = array();
 $emailConfig['subject'] = "";
-$emailConfig['message'] = "";
-$emailConfig['htmlPath'] = true;
-$emailConfig['to_email'] = $recipients;
+$emailConfig['message'] = "hello";
+$emailConfig['htmlPath'] = false;
+$emailConfig['to_email'] = "test1@exmple.com, test2@exampple.com"; // add multiple recipients with comma separated
+$emailConfig['from_email'] ="";
+$emailConfig['from_name'] = "";
+
 $send_ob = new braveEmail();
 $send_ob->to_email($emailConfig);
 
 ?&gt;
 </pre>
         </div>
-        
+        <?php } ?>
+        <?php if(!$tokenStatus){ ?>
+            <div class="mb-3 bg-yellow-100 p-5">
+                <h3><?php echo $errorMessage; ?></h3>
+            </div>
+        <?php } ?>  
     </div>
 </div>
 
