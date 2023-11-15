@@ -69,7 +69,7 @@ $emailConfig['htmlPath'] = false;
 $emailConfig['to_email'] = "test1@exmple.com, test2@exampple.com"; // add multiple recipients with comma separated
 $emailConfig['from_email'] ="";
 $emailConfig['from_name'] = "";
-
+$emailConfig['attachments'] = array("htdoc/example/example.png"); // Add Multiple usin comma seperated
 $send_ob = new braveEmail();
 $send_ob->to_email($emailConfig);
 

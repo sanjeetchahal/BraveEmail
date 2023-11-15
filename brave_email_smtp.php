@@ -364,6 +364,13 @@ class braveEmail
         $mail->Subject = $emailConfig['subject'];
         $mail->Body = $emailConfig['message'];
         
+        // $emailConfig['attachments'][] = 'D:\xammp\htdocs\wordpress-mb/wp-content/uploads/2023/11/61bFIvQ4rjL._SX569_.jpg';
+        
+        
+        // Add attachments
+        foreach ($emailConfig['attachments'] as $file_path) {
+            $mail->addAttachment($file_path);
+        }
         // $mail->AltBody = strip_tags($message); // Optional: plain text version of the message
         // echo $emailConfig['message'];exit;
         if (!$mail->send()) {
@@ -430,13 +437,53 @@ class braveEmail
             $subject = $emailConfig['subject'];
         }
         
+        $boundary = uniqid(rand(), true);
 
         // Add subject and body to raw message
         $rawMessage .= "Subject: =?utf-8?B?" . base64_encode($subject) . "?=\r\n";
         $rawMessage .= "MIME-Version: 1.0\r\n";
+
+        if(isset($emailConfig['attachments']) && !empty($emailConfig['attachments'])){
+            $rawMessage .= 'Content-type: Multipart/Mixed; boundary="' . $boundary . '"' . "\r\n";
+            $rawMessage .= "\r\n--{$boundary}\r\n";
+        }
+        
+
         $rawMessage .= "Content-Type: text/html; charset=utf-8\r\n";
         $rawMessage .= "Content-Transfer-Encoding: base64\r\n\r\n";
         $rawMessage .= chunk_split(base64_encode($body));
+
+        if(isset($emailConfig['attachments']) && !empty($emailConfig['attachments'])){
+            $rawMessage .= "--{$boundary}\r\n";
+            $emailConfig['attachments'] = array();
+            // $plugins_dir_path = WP_PLUGIN_DIR;
+        }
+        
+        
+        // $emailConfig['attachments'][] =  $plugins_dir_path;
+        // $emailConfig['attachments'][] = 'D:\xammp\htdocs\wordpress-mb/wp-content/uploads/2023/11/61bFIvQ4rjL._SX569_.jpg';
+
+        foreach ($emailConfig['attachments'] as $key => $filePath) {
+            if($filePath!=""){
+                $array = explode('/', $filePath);
+                $finfo = finfo_open(FILEINFO_MIME_TYPE); // return mime type ala mimetype extension
+                // echo "<pre>";print_r($finfo);exit;
+                $mimeType = finfo_file($finfo, $filePath);
+
+              
+                $fileName = $array[sizeof($array)-1];
+                $fileData = base64_encode(file_get_contents($filePath));
+        
+                $rawMessage .= "\r\n--{$boundary}\r\n";
+                $rawMessage .= 'Content-Type: '. $mimeType .'; name="'. $fileName .'";' . "\r\n";            
+                $rawMessage .= 'Content-ID: <' . $emailConfig['to_email']. '>' . "\r\n";            
+                $rawMessage .= 'Content-Description: ' . $fileName . ';' . "\r\n";
+                $rawMessage .= 'Content-Disposition: attachment; filename="' . $fileName . '"; size=' . filesize($filePath). ';' . "\r\n";
+                $rawMessage .= 'Content-Transfer-Encoding: base64' . "\r\n\r\n";
+                $rawMessage .= chunk_split($fileData, 76, "\n") . "\r\n";
+                $rawMessage .= "--{$boundary}\r\n";
+            }
+        }
 
         // Encode the message
         $encodedMessage = rtrim(strtr(base64_encode($rawMessage), '+/', '-_'), '=');

@@ -36,6 +36,7 @@ $emailConfig['htmlPath'] = "path/example.html";
 $emailConfig['to_email'] = $recipients;
 $emailConfig['from_email'] = "";
 $emailConfig['from_name'] = "example";
+$emailConfig['attachments'] = array("htdoc/example/example.png"); // Add Multiple usin comma seperated
 $send_ob = new braveEmail();
 $send_ob->to_email($emailConfig);
 
