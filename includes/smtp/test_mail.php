@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['to_email'])) {
         }
         
         $emailConfig['subject'] = "Brave Email Testing";
+        $emailConfig['attachments'] = array();
         $result = $this->to_email($emailConfig);  
         if($result){
             echo '<p class="text-green-600 text-center pt-2">Successfully Sent!.</p>';
