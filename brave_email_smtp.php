@@ -8,7 +8,7 @@ class braveEmail
 
     public function setDocumentationMenu($menuName)
     {
-       
+
         $this->docMenuName = $menuName;
 
         return $this;
@@ -26,8 +26,8 @@ class braveEmail
     }
 
     function customize_password_reset_email($message, $key, $user_login, $user_data) {
-       
-    
+
+
         // Customize the content of the email
         // $message = "Hi " . $user_data->user_login . ",\n\n";
         // $message .= "We received a request to reset the password for your account.\n\n";
@@ -37,7 +37,7 @@ class braveEmail
         // $message .= "Thank you,\nThe " . get_bloginfo('name') . " Team";
 
         $blogname = get_bloginfo('name');
-        
+
 
         // $template = array(
 		// 	'post_type' => 'mails',
@@ -53,40 +53,40 @@ class braveEmail
         // $templatePosts = get_posts($template);
         // if(count($templatePosts)){
         //     $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
-        
+
         //     $email['subject'] = '['.$blogname.'] '.$subject;
-    
+
         //     $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
-    
+
         //     $reset_url = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_data->user_login), 'login');
-    
+
         //     $message = str_replace("[reset-link]",$reset_url,$message);
         //     $message = str_replace("[company]",$blogname,$message);
         //     $message = str_replace("[username]",$user_data->user_login,$message);
         // }
-        
+
         $forgot_password_template_notification = get_option('forgot_password_template_notification');
         if(!empty($forgot_password_template_notification) && $forgot_password_template_notification == "enabled"){
             $message = get_option('forgot_password_template');
             $subject = get_option('forgot_password_template_subject');
-            
+
             // $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
             // $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
 
             $email['subject'] = '['.$blogname.'] '.$subject;
-    
-            
-    
+
+
+
             $reset_url = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_data->user_login), 'login');
-    
+
             $message = str_replace("{reset_link}",$reset_url,$message);
             $message = str_replace("{company}",$blogname,$message);
             $message = str_replace("{username}",$user_data->user_login,$message);
         }
-       
-        
-        
-    
+
+
+
+
         return $message;
     }
      public function custom_new_user_notification_email($email, $user, $blogname){
@@ -105,22 +105,22 @@ class braveEmail
 		// );
 
 		// $templatePosts = get_posts($template);
-        
+
         // if(count($templatePosts)){
         //     $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
-        
+
         //     $email['subject'] = '['.$blogname.'] '.$subject;
-    
+
         //     $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
-    
+
         //     $reset_key = get_password_reset_key($user);
         //     $reset_url = network_site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user->user_login), 'login');
-    
+
         //     $message = str_replace("[reset-link]",$reset_url,$message);
         //     $message = str_replace("[company]",$blogname,$message);
         //     $message = str_replace("[username]",$user->user_login,$message);
-            
-            
+
+
         // }
 
         $new_registration_client_template_notification = get_option('new_registration_client_template_notification');
@@ -128,10 +128,10 @@ class braveEmail
             $message = get_option('new_registration_client_template');
             $subject = get_option('new_registration_client_template_subject');
 
-            
+
             $reset_key = get_password_reset_key($user);
             $reset_url = network_site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user->user_login), 'login');
-            
+
             $email['subject'] = '['.$blogname.'] '.$subject;
 
             $message = str_replace("{reset_link}",$reset_url,$message);
@@ -139,9 +139,9 @@ class braveEmail
             $message = str_replace("{username}",$user->user_login,$message);
             $email['message'] = $message;
         }
-       
-        
-        
+
+
+
 
         return $email;
     }
@@ -161,46 +161,46 @@ class braveEmail
 		// );
 
 		// $templatePosts = get_posts($template);
-        
+
         // if(count($templatePosts)){
         //     $subject = get_post_meta( $templatePosts[0]->ID, 'subject',true );
-        
+
         //     $email['subject'] = '['.$blogname.'] '.$subject;
-    
+
         //     $message = get_post_meta( $templatePosts[0]->ID, 'message-body',true );
-    
-           
-    
+
+
+
         //     $message = str_replace("[email]",$user->user_email,$message);
         //     $message = str_replace("[company]",$blogname,$message);
         //     $message = str_replace("[username]",$user->user_login,$message);
-            
+
         // }
-       
+
         $new_registration_admin_template_notification = get_option('new_registration_admin_template_notification');
         if(!empty($new_registration_admin_template_notification) && $new_registration_admin_template_notification == "enabled"){
             $message = get_option('new_registration_admin_template');
             $subject = get_option('new_registration_admin_template_subject');
 
-            
+
             $email['subject'] = '['.$blogname.'] '.$subject;
-            
+
             $message = str_replace("{email}",$user->user_email,$message);
             $message = str_replace("{company}",$blogname,$message);
             $message = str_replace("{username}",$user->user_login,$message);
             $email['message'] = $message;
         }
 
-        
+
 
         return $email;
     }
 
-    public function custom_phpmailer_init( $phpmailer ) { 
+    public function custom_phpmailer_init( $phpmailer ) {
             // echo "<pre>";print_r($phpmailer);exit;
             $message = $phpmailer->Body;
             $recipients = $phpmailer->getToAddresses();
-            
+
             $toEmail = array();
             foreach ( $recipients as $recipient ) {
                 $toEmail[] = $recipient[0];
@@ -213,10 +213,10 @@ class braveEmail
             $emailConfig['to_email'] = $recipients;
             $emailConfig['from_email'] = $phpmailer->From;
             $emailConfig['from_name'] = $phpmailer->FromName;
-            $result = $this->to_email($emailConfig);  
+            $result = $this->to_email($emailConfig);
             if($result){
                 return '<p class="text-green-600 text-center pt-2">Successfully Sent!.</p>';
-            } 
+            }
             else
             {
                 return '<p class="text-green-600 text-center pt-2">Opps!.</p>';
@@ -228,7 +228,7 @@ class braveEmail
     }
     public function email_submenu_page()
     {
-        
+
         // add_submenu_page(
         //     'options-general.php', // Parent slug jis bhi page ka submenu banan na us page par click kar ke last path copy kar lo edit.php?post_type=spaces
         //     $this->docMenuName, // Page title
@@ -247,9 +247,9 @@ class braveEmail
                 array(&$this, 'brave_email_smtp_page_callback'),
                 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAyMCAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUuODgyMTEgMTEuMzI4NkM2LjAxMzM2IDExLjI1ODggNi4xNjAxMiAxMS4yMjIyIDYuMzA5MjIgMTEuMjIyMkwxMy42OTA4IDExLjIyMjJDMTMuODM5OSAxMS4yMjIyIDEzLjk4NjYgMTEuMjU4OCAxNC4xMTc5IDExLjMyODZDMTQuOTQxMiAxMS43NjY2IDE0LjYyNiAxMyAxMy42OTA4IDEzTDYuMzA5MjEgMTNDNS4zNzQwMSAxMyA1LjA1ODgzIDExLjc2NjYgNS44ODIxMSAxMS4zMjg2WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTMuMTMzNTQgOC4yMTc0OUMzLjI2MjYzIDguMTQ3NjcgMy40MDY5OCA4LjExMTExIDMuNTUzNjIgOC4xMTExMUwxNi40NDY0IDguMTExMTFDMTYuNTkzIDguMTExMTEgMTYuNzM3NCA4LjE0NzY3IDE2Ljg2NjUgOC4yMTc0OUMxNy42NzYyIDguNjU1NSAxNy4zNjYyIDkuODg4ODkgMTYuNDQ2NCA5Ljg4ODg5TDMuNTUzNjIgOS44ODg4OUMyLjYzMzc5IDkuODg4ODkgMi4zMjM4IDguNjU1NSAzLjEzMzU0IDguMjE3NDlaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMi4yNjMzNCAwLjUzNjY5M0MyLjEyMTQyIDAuNjY4NzY5IDEuOTk5MDIgMC44MjQwMzMgMS45MDIzNSAwLjk5ODgyM0wwLjIzNTM4MiA0LjAxMjg3Qy0wLjQ1MTQ3OCA1LjI1NDc4IDAuNDQ3MTA2IDYuNzc3NzggMS44NjY3MSA2Ljc3Nzc4TDE4LjEzMzMgNi43Nzc3OEMxOS41NTI5IDYuNzc3NzggMjAuNDUxNSA1LjI1NDc4IDE5Ljc2NDYgNC4wMTI4N0wxOC4wOTc2IDAuOTk4ODIyQzE3Ljk5MjMgMC44MDgzNTQgMTcuODU2NCAwLjY0MTA3MiAxNy42OTggMC41MDE3MTRDMTYuMDk1OSAxLjUwNTg5IDEyLjA5MTQgMy44NzM3NyA5Ljk1MjcyIDMuODczNzdDNy44Mzg0OSAzLjg3Mzc3IDMuOTAwODcgMS41NTk3MyAyLjI2MzM0IDAuNTM2NjkzWiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTIuOTYwNjMgMC4xMjcyMzNDNC43MjU2NiAxLjE5ODU5IDguMDk5MzEgMy4wODY3NyA5Ljk1MjcyIDMuMDg2NzdDMTEuODE3MiAzLjA4Njc3IDE1LjIyMDIgMS4xNzU5MiAxNi45NzYzIDAuMTA4MDlDMTYuODEyNyAwLjA2MTU0MjMgMTYuNjQxMyAwLjAzNzAzOSAxNi40NjYzIDAuMDM3MDM5TDMuNTMzNjggMC4wMzcwMzc4QzMuMzM2MTIgMC4wMzcwMzc5IDMuMTQzMSAwLjA2ODI4MjcgMi45NjA2MyAwLjEyNzIzM1oiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=',
 				40,
-                
+
             );
-            
+
             // Add a submenu item under the custom top-level menu
             add_submenu_page(
                 'brave-email-smtp',      // Parent menu slug
@@ -290,7 +290,7 @@ class braveEmail
                 if(isset($_GET['tabview']) && $_GET['provider'] == "google"){
                     if($_GET['tabview'] == ''){
                         include('includes/google/setup_google.php');
-                        
+
                     }
                     elseif($_GET['tabview'] == 'gjson'){
                         include('includes/google/update_google_secret.php');
@@ -302,13 +302,13 @@ class braveEmail
                     elseif($_GET['tabview'] == 'test-email'){
                         include('includes/google/test_mail.php');
                     }
-                    
+
                 }
 
                 if(isset($_GET['tabview']) && $_GET['provider'] == "smtp"){
                     if($_GET['tabview'] == 'settings'){
                         include('includes/smtp/smtp_settings.php');
-                        
+
                     }
                     elseif($_GET['tabview'] == 'usage'){
                         include('includes/smtp/usage_smtp_mail.php');
@@ -317,11 +317,11 @@ class braveEmail
                         include('includes/smtp/test_mail.php');
                     }
                 }
-                
-                
+
+
             }
         }
-        
+
     }
 
     public function to_email($emailConfig){
@@ -336,11 +336,11 @@ class braveEmail
         }
 
         return $result;
-        
+
     }
 
     public function smtp_mail($config,$emailConfig){
-        
+
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'includes/smtp/PHPMailer/autoload.php';
         $mail = new PHPMailer(true);;
         ;
@@ -360,13 +360,13 @@ class braveEmail
         $mail->setFrom($emailConfig['from_email'], $emailConfig['from_name']); // Replace with your email address and name
 
         $mail->addAddress($emailConfig['to_email']);
-        $mail->isHTML(true);  
+        $mail->isHTML(true);
         $mail->Subject = $emailConfig['subject'];
         $mail->Body = $emailConfig['message'];
-        
+
         // $emailConfig['attachments'][] = 'D:\xammp\htdocs\wordpress-mb/wp-content/uploads/2023/11/61bFIvQ4rjL._SX569_.jpg';
-        
-        
+
+
         // Add attachments
         foreach ($emailConfig['attachments'] as $file_path) {
             $mail->addAttachment($file_path);
@@ -384,7 +384,7 @@ class braveEmail
 
     public function google_mail($config,$emailConfig){
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'includes/google/vendor/autoload.php';
-        
+
         $client = new Google_Client();
         $client->setApplicationName('BraveEmail');
         $client->addScope(Google_Service_Gmail::GMAIL_SEND);
@@ -396,8 +396,8 @@ class braveEmail
             $accessToken = json_decode(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'includes/google/uploads/token.json'), true);
             $client->setAccessToken($accessToken);
         }
-        //echo $currentURL; 
-        //  exit; 
+        //echo $currentURL;
+        //  exit;
         $client->setRedirectUri($config['redirect_url']);
         $service = new Google_Service_Gmail($client);
         $message = new Google_Service_Gmail_Message();
@@ -405,29 +405,29 @@ class braveEmail
         $rawMessage .= "To: ".$emailConfig['to_email']."\r\n";
 
         // Pick email template from email.html file and replace the placeholders with actual values {name},{email},{backup-time},{backup-location},{backup-size}, and extract subject and body
-        
+
         $subject = 'Brave Email';
         if($emailConfig['htmlPath'] == true)
         {
             $emailTemplate = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'includes/email.html');
             // Get subject in subject tag
-            
+
             if (preg_match('/<subject>(.*?)<\/subject>/s', $emailTemplate, $matches)) {
                 $subject = $matches[1];
             }
             // Remove subject; the rest of the email template is the body
             $emailTemplate = preg_replace('/<subject>(.*?)<\/subject>/s', '', $emailTemplate);
             // Replace placeholders with actual values
-            
+
 
             $emailTemplate = str_replace('{email}', $emailConfig['to_email'], $emailTemplate);
-            
+
             // Replace body in email template
             $body = $emailTemplate;
         }
         elseif($emailConfig['htmlPath'] != true && $emailConfig['htmlPath'] != "")
         {
-        
+
         }
         elseif($emailConfig['message']!=""){
             $body = $emailConfig['message'];
@@ -436,7 +436,7 @@ class braveEmail
         if($emailConfig['subject']){
             $subject = $emailConfig['subject'];
         }
-        
+
         $boundary = uniqid(rand(), true);
 
         // Add subject and body to raw message
@@ -447,7 +447,7 @@ class braveEmail
             $rawMessage .= 'Content-type: Multipart/Mixed; boundary="' . $boundary . '"' . "\r\n";
             $rawMessage .= "\r\n--{$boundary}\r\n";
         }
-        
+
 
         $rawMessage .= "Content-Type: text/html; charset=utf-8\r\n";
         $rawMessage .= "Content-Transfer-Encoding: base64\r\n\r\n";
@@ -455,13 +455,7 @@ class braveEmail
 
         if(isset($emailConfig['attachments']) && !empty($emailConfig['attachments'])){
             $rawMessage .= "--{$boundary}\r\n";
-            $emailConfig['attachments'] = array();
-            // $plugins_dir_path = WP_PLUGIN_DIR;
         }
-        
-        
-        // $emailConfig['attachments'][] =  $plugins_dir_path;
-        // $emailConfig['attachments'][] = 'D:\xammp\htdocs\wordpress-mb/wp-content/uploads/2023/11/61bFIvQ4rjL._SX569_.jpg';
 
         foreach ($emailConfig['attachments'] as $key => $filePath) {
             if($filePath!=""){
@@ -470,13 +464,13 @@ class braveEmail
                 // echo "<pre>";print_r($finfo);exit;
                 $mimeType = finfo_file($finfo, $filePath);
 
-              
+
                 $fileName = $array[sizeof($array)-1];
                 $fileData = base64_encode(file_get_contents($filePath));
-        
+
                 $rawMessage .= "\r\n--{$boundary}\r\n";
-                $rawMessage .= 'Content-Type: '. $mimeType .'; name="'. $fileName .'";' . "\r\n";            
-                $rawMessage .= 'Content-ID: <' . $emailConfig['to_email']. '>' . "\r\n";            
+                $rawMessage .= 'Content-Type: '. $mimeType .'; name="'. $fileName .'";' . "\r\n";
+                $rawMessage .= 'Content-ID: <' . $emailConfig['to_email']. '>' . "\r\n";
                 $rawMessage .= 'Content-Description: ' . $fileName . ';' . "\r\n";
                 $rawMessage .= 'Content-Disposition: attachment; filename="' . $fileName . '"; size=' . filesize($filePath). ';' . "\r\n";
                 $rawMessage .= 'Content-Transfer-Encoding: base64' . "\r\n\r\n";
@@ -501,6 +495,6 @@ class braveEmail
             return false;
         }
     }
-    
+
 }
 

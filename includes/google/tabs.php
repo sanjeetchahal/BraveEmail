@@ -11,9 +11,9 @@
       // JSON structure containing tab data
       $tabs = '[
           {"label": "Getting Started", "tabview": ""},
-          {"label": "Google JSON", "tabview": "gjson"},
-          {"label": "Usage", "tabview": "usage"} ,
-          {"label": "Test Email", "tabview": "test-email"}      
+          {"label": "Google JSON", "tabview": "=gjson"},
+          {"label": "Usage", "tabview": "=usage"} ,
+          {"label": "Test Email", "tabview": "=test-email"}
           ]';
 
           // Decoding the JSON string into an array
@@ -24,8 +24,8 @@
       if(isset($_GET['tabview'])){
         $currentPage = $_GET['tabview'];
       }
-      
-      
+
+
       // Loop through the tab array and create the tab headers
       echo '<div class="mb-5 text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-500 dark:border-gray-700">';
       echo '<ul class="flex flex-wrap -mb-px justify-center">';
@@ -33,7 +33,7 @@
         $isActive = ($currentPage === $tab['tabview']) ? 'text-blue-600 border-blue-600 active dark:text-blue-500 dark:border-blue-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-500';
         $isDisabled = isset($tab['disabled']) && $tab['disabled'] ? 'text-gray-400 cursor-not-allowed dark:text-gray-500' : '';
         echo '<li class="mr-2">';
-        echo '<a href="' . admin_url('admin.php?page=brave-email-smtp&provider=google&tabview='.$tab['tabview']) . '" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg ' . $isActive . ' ' . $isDisabled . '" aria-current="page">' . $tab['label'] . '</a>';
+        echo '<a href="' . admin_url('admin.php?page=brave-email-smtp&provider=google&tabview'.$tab['tabview']) . '" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg ' . $isActive . ' ' . $isDisabled . '" aria-current="page">' . $tab['label'] . '</a>';
         echo '</li>';
       }
       echo '</ul>';
